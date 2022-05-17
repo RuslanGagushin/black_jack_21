@@ -17,19 +17,19 @@ def calculate_score(cards):
 
 def compare(user_score, computer_score):
     if user_score == computer_score:
-        return "Draw"
+        return "Ничья"
     elif computer_score == 0:
-        return "Lose, oponent has Blackjack"
+        return "Вы проиграли, у противника Blackjack"
     elif user_score == 0:
-        return "Win with a Blackjack"
+        return "Вы выиграли, у Вас Blackjack"
     elif user_score > 21:
-        return "You went over. You lose"
+        return "У Вас перебор. Вы проиграли"
     elif computer_score > 21:
-        return "Opponent went over. You win"
+        return "У противника перебор. Вы выиграли"
     elif user_score > computer_score:
-        return "You win"
+        return "Вы выиграли"
     else:
-        return "You lose"
+        return "Вы проиграли"
 
 def play_game():
     # Списки карт игрока и компьютера
@@ -37,34 +37,37 @@ def play_game():
     computer_cards = []
     is_game_over = False
 
+    # Раздаем по 2 карты каждому игроку
     for _ in range(2):
         user_cards.append(deal_card())
         computer_cards.append(deal_card())
 
+    # Цикл выдает карты игроку до момента, пока игрок не наберет 21 очко или более
     while not is_game_over:
-
+        # Считаем счет игрока и компьютера
         user_score = calculate_score(user_cards)
         computer_score = calculate_score(computer_cards)
-
-        print(f" Your cards: {user_cards}, current score: {user_score}")
-        print(f" Computer's first card: {computer_cards[0]}")
-
+        # Выводим счет на экран
+        print(f" Ваши карты: {user_cards}, текущий счет: {user_score}")
+        print(f" Первая карта компьютера: {computer_cards[0]}")
+        # Проверяем счет
         if user_score == 0 or computer_score == 0 or user_score > 21:
             is_game_over = True
         else:
-            user_should_deal = input("Type 'y' to get another card, type 'n' to pass: ")
+            user_should_deal = input("Введите 'y' чтобы взять еще карту, введите 'n' для завершения: ")
             if user_should_deal == "y":
                 user_cards.append(deal_card())
             else:
                 is_game_over = True
-
+    
+    # Цикл выдает карты компьютеру, пока тот не наберет 21 или пока у него меньше 17 очков.
     while computer_score != 0 and computer_score < 17:
         computer_cards.append(deal_card())
         computer_score = calculate_score(computer_cards)
 
-    print(f" Your final cards: {user_cards}, final score: {user_score}")
-    print(f" Computer's final cards: {computer_cards},  final score: {computer_score}")
+    print(f" Ваши карты: {user_cards}, финальный счет: {user_score}")
+    print(f" Карты компьютера: {computer_cards},  финальный счет: {computer_score}")
     print(compare(user_score, computer_score))
 
-while input("Do you want to play a game of Blackjack? Type 'y' or 'n': ") == "y":
+while input("Хотите сыграть в Blackjack? Введите 'y' или 'n': ") == "y":
     play_game()
